@@ -6,6 +6,7 @@ pragma solidity ^0.4.24;
  * @dev Math operations with safety checks that throw on error
  */
 library SafeMath {
+  int256 constant INT256_MIN = int256((uint256(1) << 255));
 
   /**
   * @dev Multiplies two unsigned integers, throws on overflow.
@@ -34,7 +35,7 @@ library SafeMath {
       return 0;
     }
     int256 c = a * b;
-    assert(c / a == b);
+    assert((a != -1 || b != INT256_MIN) && c / a == b);
     return c;
   }
 
@@ -54,7 +55,6 @@ library SafeMath {
   function div(int256 a, int256 b) internal pure returns (int256) {
     // assert(b > 0); // Solidity automatically throws when dividing by 0
     // Overflow only happens when the smallest negative int is multiplied by -1.
-    int256 INT256_MIN = int256((uint256(1) << 255));
     assert(a != INT256_MIN || b != -1);
     return a / b;
   }

@@ -187,6 +187,7 @@ contract('SafeMath', () => {
         const b = new BigNumber(-1);
 
         await assertJump(this.safeMath.mulInts(a, b));
+        await assertJump(this.safeMath.mulInts(b, a));
       });
     });
 
