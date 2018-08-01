@@ -6,6 +6,7 @@ pragma solidity ^0.4.24;
  * @dev Math operations with safety checks that throw on error
  */
 library SafeMath {
+  int256 constant INT256_MIN = int256((uint256(1) << 255));
 
   /**
   * @dev Multiplies two unsigned integers, throws on overflow.
@@ -26,16 +27,15 @@ library SafeMath {
   /**
   * @dev Multiplies two signed integers, throws on overflow.
   */
-  function mul(int256 a, int256 b) internal pure returns (int256) {
+  function mul(int256 a, int256 b) internal pure returns (int256 c) {
     // Gas optimization: this is cheaper than asserting 'a' not being zero, but the
     // benefit is lost if 'b' is also tested.
     // See: https://github.com/OpenZeppelin/openzeppelin-solidity/pull/522
     if (a == 0) {
       return 0;
     }
-    int256 c = a * b;
-    assert(c / a == b);
-    return c;
+    c = a * b;
+    assert((a != -1 || b != INT256_MIN) && c / a == b);
   }
 
   /**
@@ -52,9 +52,8 @@ library SafeMath {
   * @dev Integer division of two signed integers, truncating the quotient.
   */
   function div(int256 a, int256 b) internal pure returns (int256) {
-    // assert(b > 0); // Solidity automatically throws when dividing by 0
+    // assert(b != 0); // Solidity automatically throws when dividing by 0
     // Overflow only happens when the smallest negative int is multiplied by -1.
-    int256 INT256_MIN = int256((uint256(1) << 255));
     assert(a != INT256_MIN || b != -1);
     return a / b;
   }
@@ -70,10 +69,9 @@ library SafeMath {
   /**
   * @dev Subtracts two signed integers, throws on overflow.
   */
-  function sub(int256 a, int256 b) internal pure returns (int256) {
-    int256 c = a - b;
+  function sub(int256 a, int256 b) internal pure returns (int256 c) {
+    c = a - b;
     assert((b >= 0 && c <= a) || (b < 0 && c > a));
-    return c;
   }
 
   /**
@@ -88,9 +86,8 @@ library SafeMath {
   /**
   * @dev Adds two signed integers, throws on overflow.
   */
-  function add(int256 a, int256 b) internal pure returns (int256) {
-    int256 c = a + b;
+  function add(int256 a, int256 b) internal pure returns (int256 c) {
+    c = a + b;
     assert((b >= 0 && c >= a) || (b < 0 && c < a));
-    return c;
   }
 }
